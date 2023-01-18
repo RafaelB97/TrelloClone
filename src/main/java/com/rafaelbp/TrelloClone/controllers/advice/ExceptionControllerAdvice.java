@@ -1,5 +1,6 @@
 package com.rafaelbp.TrelloClone.controllers.advice;
 
+import com.rafaelbp.TrelloClone.exceptions.ListNotFoundException;
 import com.rafaelbp.TrelloClone.exceptions.TaskNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,5 +19,10 @@ public class ExceptionControllerAdvice {
         error.put("time", "1300");
 
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ListNotFoundException.class)
+    public ResponseEntity<String> handleListNotFoundException(ListNotFoundException e) {
+        return new ResponseEntity<>("List not found", HttpStatus.BAD_REQUEST);
     }
 }

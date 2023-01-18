@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/task")
+@RequestMapping("/api/v1/list/{listId}/task")
 public class TaskController {
 
     private final ITaskService taskService;
@@ -17,42 +17,45 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> getAllTask() {
-        return taskService.getAllTask();
+    public List<Task> getAllTask(
+            @PathVariable Long listId
+    ) {
+        return taskService.getAllTask(listId);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{taskId}")
     public Task getTask(
-        @PathVariable Long id
+        @PathVariable Long taskId,
+        @PathVariable Long listId
     ) {
-        var task = this.taskService.getTask(id);
+        var task = this.taskService.getTask(listId, taskId);
         return task;
     }
 
     @PostMapping
     public Task addTask(
+            @PathVariable Long listId,
             @RequestBody Task task
     ) {
-        Task addedTask = taskService.addTask(task);
-        System.out.println(task);
+        Task addedTask = taskService.addTask(listId, task);
         return addedTask;
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{taskId}")
     public Task updateTask(
-            @PathVariable Long id,
+            @PathVariable Long taskId,
+            @PathVariable Long listId,
             @RequestBody Task task
     ) {
-        System.out.println(task);
-        Task updatedTask = taskService.updateTask(id, task);
+        Task updatedTask = taskService.updateTask(listId, taskId, task);
         return updatedTask;
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{taskId}")
     public void deleteTask(
-            @PathVariable Long id
+            @PathVariable Long taskId,
+            @PathVariable Long listId
     ) {
-        taskService.deleteTask(id);
-        System.out.println("Task was deleted");
+        taskService.deleteTask(listId, taskId);
     }
 }
