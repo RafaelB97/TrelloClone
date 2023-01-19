@@ -1,5 +1,6 @@
 package com.rafaelbp.TrelloClone.controllers;
 
+import com.rafaelbp.TrelloClone.dto.TaskRequest;
 import com.rafaelbp.TrelloClone.models.Task;
 import com.rafaelbp.TrelloClone.services.ITaskService;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class TaskController {
     public List<Task> getAllTask(
             @PathVariable Long listId
     ) {
-        return taskService.getAllTask(listId);
+        return taskService.getAllTasksForList(listId);
     }
 
     @GetMapping("/{taskId}")
@@ -35,9 +36,9 @@ public class TaskController {
     @PostMapping
     public Task addTask(
             @PathVariable Long listId,
-            @RequestBody Task task
+            @RequestBody TaskRequest taskRequest
     ) {
-        Task addedTask = taskService.addTask(listId, task);
+        Task addedTask = taskService.addTask(listId, taskRequest);
         return addedTask;
     }
 

@@ -1,5 +1,6 @@
 package com.rafaelbp.TrelloClone.services;
 
+import com.rafaelbp.TrelloClone.dto.TaskRequest;
 import com.rafaelbp.TrelloClone.exceptions.ListNotFoundException;
 import com.rafaelbp.TrelloClone.exceptions.TaskNotFoundException;
 import com.rafaelbp.TrelloClone.models.Task;
@@ -28,7 +29,7 @@ public class TaskService implements ITaskService {
     }
 
     @Override
-    public List<Task> getAllTask(Long listId) {
+    public List<Task> getAllTasksForList(Long listId) {
         ListModel list = getList(listId);
         var tasks = this.taskRepository.findByListModel(list);
         return tasks;
@@ -43,13 +44,19 @@ public class TaskService implements ITaskService {
     }
 
     @Override
-    public Task addTask(Long listId, Task task) {
+    public Task addTask(Long listId, TaskRequest taskRequest) {
         ListModel list = getList(listId);
-        task.setListModel(list);
-        task.setFinish(false);
 
-        Task addedTask = taskRepository.save(task);
-        return addedTask;
+        Task task  = Task.builder()
+                .title(taskRequest.getTitle())
+                .description(taskRequest.getDescription())
+                .finish(false)
+                .date(taskRequest.getDate())
+                .listModel(list)
+                .build();
+
+        Task newTask = taskRepository.save(task);
+        return newTask;
     }
 
     @Override
