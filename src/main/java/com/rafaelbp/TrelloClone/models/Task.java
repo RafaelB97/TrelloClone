@@ -1,5 +1,7 @@
 package com.rafaelbp.TrelloClone.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,10 +22,11 @@ public class Task {
     private String description;
     private Boolean finish;
     private String date;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "list_id",
             foreignKey = @ForeignKey(name = "LIST_ID_FK")
     )
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private ListModel listModel;
 }

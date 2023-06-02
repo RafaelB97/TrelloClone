@@ -8,6 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/list")
+@CrossOrigin
 public class ListController {
     private final ListService listService;
 
